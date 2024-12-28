@@ -1,0 +1,100 @@
+<?xml version = "1.0"?>
+<robot xmlns:xacro = "http://www.ros.org/wiki/xacro">
+    
+    <link name="base_link">
+            <visual>
+                <geometry>
+                    <box size="0.6 0.4 0.2"/>
+                </geometry>
+                <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0"/>
+                <material name = "green" />
+            </visual>
+            <xacro:box_inertia m="5.0" l="0.6" w="0.4" h="0.2" xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0"/>
+            <collision>
+            <geometry>
+                    <box size="0.6 0.4 0.2"/>
+            </geometry>
+                <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0"/>            
+            </collision>
+    </link>
+
+    <link name="right_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0.0 0.025 0.0" rpy="1.57 0.0 0.0"/>
+            <material name = "grey" />
+        </visual>
+        <xacro:wheel_inertia m="1.0" r="0.1" h="0.05" xyz="0.0 0.025 0.0" rpy="1.57 0.0 0.0"/>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0.0 0.025 0.0" rpy="1.57 0.0 0.0"/>
+        </collision>
+    </link>
+
+    <link name="left_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0.0 -0.025 0.0" rpy="1.57 0.0 0.0"/>
+            <material name = "grey" />
+        </visual>
+        <xacro:wheel_inertia m="1.0" r="0.1" h="0.05" xyz="0.0 -0.025 0.0" rpy="1.57 0.0 0.0"/>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0.0 -0.025 0.0" rpy="1.57 0.0 0.0"/>
+        </collision>
+    </link>
+
+    <link name="base_footprint"/>
+
+    <link name="caster_wheel_link">
+        <visual>
+            <geometry>
+                <sphere radius="0.05"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="grey"/>
+        </visual>
+        <xacro:caster_wheel_inertia m="0.5" r="0.05" xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <collision>
+            <geometry>
+                <sphere radius="0.05"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    
+    <joint name="base_right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel_link"/>
+        <origin xyz="-0.2 0.2 0.0" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+
+    <joint name="base_left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel_link"/>
+        <origin xyz="-0.2 -0.2 0.0" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+
+    <joint name="base_caster_wheel_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="caster_wheel_link"/>
+        <origin xyz="0.2 0.0 -0.05" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+</robot>

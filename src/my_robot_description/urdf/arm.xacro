@@ -1,0 +1,76 @@
+<?xml version = "1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="arm_base_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.02"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <xacro:box_inertia m="0.5" l="0.1" w="0.1" h="0.02" xyz="0 0 0" rpy="0 0 0"/>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.02"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="forearm_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.3"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <xacro:wheel_inertia m="0.3" r="0.02" h="0.3" xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+        <collision>
+            <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.3"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="hand_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.3"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <xacro:wheel_inertia m="0.3" r="0.02" h="0.3" xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+        <collision>
+            <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.3"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="arm_base_forearm_joint" type="revolute">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="arm_base_link"/>
+        <child link="forearm_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="0.0" upper="${pi/2}" effort="100" velocity="100"/>
+        <dynamics friction="0.05" damping="0.1"/>
+    </joint>
+
+    <joint name="forearm_hand_joint" type="revolute">
+        <origin xyz="0.0 0.0 0.3" rpy="0.0 0.0 0.0"/>
+        <parent link="forearm_link"/>
+        <child link="hand_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="0.0" upper="${pi/2}" effort="100" velocity="100"/>
+    </joint>
+
+    <joint name="base_arm_base_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.21" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="arm_base_link"/>
+    </joint>
+</robot>
