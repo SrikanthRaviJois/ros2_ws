@@ -132,7 +132,7 @@ setup(
 
 # 5. Create the `bringup` package
 ```bash 
-ros2 pkg create --build-type ament_python my_robot_bringup --dependencies rclpy launch
+ros2 pkg create my_robot_bringup 
 ```
 
 # Add a launch file
