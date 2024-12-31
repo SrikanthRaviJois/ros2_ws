@@ -1,26 +1,26 @@
 # ROS 2 Workspace Setup for My Robot
 
-# 1. Create the workspace
+## 1. Create the workspace
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws
 colcon build
 ```
 
-# 2. Create the `interfaces` package
+## 2. Create the `interfaces` package
 ```bash
 cd ~/ros2_ws/src
 ros2 pkg create --build-type ament_cmake my_robot_interfaces
 ```
 
-# Add message and service definitions
+### Add message and service definitions
 ```bash
 mkdir -p my_robot_interfaces/msg my_robot_interfaces/srv
 echo "string status" > my_robot_interfaces/msg/Status.msg
 echo -e "string mode\n---\nbool success" > my_robot_interfaces/srv/SetMode.srv
 ```
 
-# Update CMakeLists.txt
+### Update CMakeLists.txt
 ```bash
 echo '
 ```
@@ -30,10 +30,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Status.msg"
   "srv/SetMode.srv"
 )
-' >> my_robot_interfaces/CMakeLists.txt
 ```
 
-# Update package.xml
+### Update package.xml
 ```bash
 echo '
 ```
@@ -42,12 +41,12 @@ echo '
 <exec_depend>rosidl_default_runtime</exec_depend>
 ```
 
-# 3. Create the `description` package
+## 3. Create the `description` package
 ```bash
 ros2 pkg create --build-type ament_cmake my_robot_description
 ```
 
-# Add a sample URDF file
+### Add a sample URDF file
 ```bash
 mkdir -p my_robot_description/urdf
 echo '
@@ -62,7 +61,17 @@ echo '
 </robot>
 ```
 
-# Update CMakeLists.txt
+### Run Robot State Publisher Node
+```bash
+Ros2 run robot_state_publisher --ros-args -p robot_description:="path/to/urdf"
+```
+### Launch Gazebo and spawn robot
+```bash
+ros2 launch gazebo_ros gazebo.launch.py
+ros2 run gazebo_ros spawn_entiry.py -topic robot_description -entity my_robot
+```
+
+### Update CMakeLists.txt
 ```bash
 echo '
 ```
@@ -71,12 +80,13 @@ install(DIRECTORY urdf/
   DESTINATION share/${PROJECT_NAME}/urdf)
 ```
 
-# 4. Create the `controller` package
+
+## 4. Create the `controller` package
 ```bash
 ros2 pkg create --build-type ament_python my_robot_controller --dependencies rclpy
 ```
 
-# Add a Python controller node
+### Add a Python controller node
 ``` bash
 mkdir -p my_robot_controller/my_robot_controller
 echo 
@@ -102,7 +112,7 @@ if __name__ == "__main__":
     main()
 ```
 
-# Update setup.py
+### Update setup.py
 ```bash
 echo '
 ```
@@ -130,12 +140,12 @@ setup(
 )
 ```
 
-# 5. Create the `bringup` package
+## 5. Create the `bringup` package
 ```bash 
 ros2 pkg create my_robot_bringup 
 ```
 
-# Add a launch file
+### Add a launch file
 ```bash
 mkdir -p my_robot_bringup/launch
 echo '
@@ -154,7 +164,7 @@ def generate_launch_description():
     ])
 ```
 
-# Update setup.py
+### Update setup.py
 ```bash
 echo '
 ```
@@ -180,17 +190,22 @@ setup(
     },
 )
 ```
-# 6. Build the workspace
+## 6. Build the workspace
 ```bash
 cd ~/ros2_ws
 colcon build
 ```
 
-# 7. Source the workspace
+## 7. Source the workspace
 ```bash
 source install/setup.bash
 ```
-# 8. Test the setup
+## 8. Test the setup
 ```bash
 ros2 launch my_robot_bringup bringup_launch.py
 ```
+### For gazebo glitching
+```bash
+/usr/bin/env QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCREEN_SCALE_FACTORS=[1.0,1.0] /usr/bin/gazebo
+```
+
