@@ -63,7 +63,11 @@ echo '
 
 ### Run Robot State Publisher Node
 ```bash
-Ros2 run robot_state_publisher --ros-args -p robot_description:="path/to/urdf"
+ros2 run robot_state_publisher --ros-args -p robot_description:="$(xacro ~/ros2_ws/src/my_robot_description/urdf/my_robot.urdf.xacro)"
+```
+### Visualization of URDF using rviz
+```bash
+/usr/bin/env QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCREEN_SCALE_FACTORS=[1.0,1.0] ros2 launch urdf_tutorial display.launch.py model:=/home/srikanth/ros2_ws/src/my_robot_description/urdf/my_robot.urdf.xacro
 ```
 ### Launch Gazebo and spawn robot
 ```bash
