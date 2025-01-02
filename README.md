@@ -21,9 +21,6 @@ echo -e "string mode\n---\nbool success" > my_robot_interfaces/srv/SetMode.srv
 ```
 
 ### Update CMakeLists.txt
-```bash
-echo '
-```
 ```txt
 find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
